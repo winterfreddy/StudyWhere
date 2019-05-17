@@ -4,15 +4,26 @@
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
+<<<<<<< Updated upstream
     https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=20:0E:DB:CD:7C:78:C9:94:50:C2:1C:BE:66:10:7B:AD:AD:0D:C1:F4%3Bcom.example.studywhere
+=======
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=56:F6:94:2D:7B:CF:04:D1:27:F6:40:6F:DB:FF:A7:BB:C7:8E:8F:12%3Bcom.example.studywhere
+>>>>>>> Stashed changes
 
     You can also add your credentials to an existing key, using these values:
 
     Package name:
+<<<<<<< Updated upstream
     20:0E:DB:CD:7C:78:C9:94:50:C2:1C:BE:66:10:7B:AD:AD:0D:C1:F4
 
     SHA-1 certificate fingerprint:
     20:0E:DB:CD:7C:78:C9:94:50:C2:1C:BE:66:10:7B:AD:AD:0D:C1:F4
+=======
+    56:F6:94:2D:7B:CF:04:D1:27:F6:40:6F:DB:FF:A7:BB:C7:8E:8F:12
+
+    SHA-1 certificate fingerprint:
+    56:F6:94:2D:7B:CF:04:D1:27:F6:40:6F:DB:FF:A7:BB:C7:8E:8F:12
+>>>>>>> Stashed changes
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
