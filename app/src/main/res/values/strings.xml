@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StudyWhere</string>
+    <string name="title_activity_view_map_only">View Locations</string>
 </resources>
