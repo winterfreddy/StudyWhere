@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">StudyWhere</string>
+    <string name="title_activity_view_map_only">View Locations</string>
     <string name="title_activity_pick_maps">Map</string>
     <string name="add_by_map">Add By Map</string>
     <string name="add_by_text">Add By Text</string>
