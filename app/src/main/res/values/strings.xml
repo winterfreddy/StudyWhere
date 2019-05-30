@@ -9,4 +9,6 @@
     <string name="crowdedness">Crowdedness</string>
     <string name="locationname">LocationName</string>
     <string name="noise_level">Noise Level</string>
+    <string name="view_study_groups">View Study Groups</string>
+    <string name="help">Help</string>
 </resources>

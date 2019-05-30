@@ -10,10 +10,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginLeft="84dp"
-        android:layout_marginTop="72dp"
-        android:text="@string/study_place_information"
+        android:layout_marginStart="112dp"
+        android:layout_marginLeft="112dp"
+        android:layout_marginTop="68dp"
+        android:text="Add Study Place"
         android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,9 +22,9 @@
         android:id="@+id/LocationText"
         android:layout_width="89dp"
         android:layout_height="38dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginLeft="128dp"
+        android:layout_marginTop="52dp"
         android:text="@string/location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -33,72 +33,22 @@
         android:id="@+id/CrowdednessText"
         android:layout_width="114dp"
         android:layout_height="36dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginLeft="116dp"
+        android:layout_marginTop="64dp"
         android:text="@string/crowdedness"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LocationText" />
 
     <TextView
         android:id="@+id/NoiseLevelText"
-        android:layout_width="105dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="111dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginLeft="112dp"
+        android:layout_marginTop="48dp"
         android:text="@string/noise_level"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CrowdednessText" />
-
-    <EditText
-        android:id="@+id/CrowdednessTextRes"
-        android:layout_width="222dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="52dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="How crowded is it?"
-        app:layout_constraintStart_toEndOf="@+id/CrowdednessText"
-        app:layout_constraintTop_toBottomOf="@+id/locationButton" />
-
-    <EditText
-        android:id="@+id/NoiseLevelRes"
-        android:layout_width="225dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="80dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="How noisy is it?"
-        app:layout_constraintStart_toEndOf="@+id/NoiseLevelText"
-        app:layout_constraintTop_toBottomOf="@+id/CrowdednessTextRes" />
-
-    <EditText
-        android:id="@+id/LocationRes"
-        android:layout_width="239dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="36dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/locationname"
-        app:layout_constraintStart_toEndOf="@+id/LocationText"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/locationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="24dp"
-        android:text="Select Location On Map"
-        app:layout_constraintStart_toEndOf="@+id/LocationText"
-        app:layout_constraintTop_toBottomOf="@+id/LocationRes" />
 
 </android.support.constraint.ConstraintLayout>
