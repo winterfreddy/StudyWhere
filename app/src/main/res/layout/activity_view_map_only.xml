@@ -19,8 +19,8 @@
         android:id="@+id/viewstudygroupsbutton"
         android:layout_width="wrap_content"
         android:layout_height="84dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="475dp"
         android:text="@string/view_study_groups"
         android:visibility="visible" />
@@ -29,8 +29,8 @@
         android:id="@+id/helpbutton"
         android:layout_width="wrap_content"
         android:layout_height="84dp"
-        android:layout_marginStart="275dp"
-        android:layout_marginLeft="275dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
         android:layout_marginTop="475dp"
         android:text="@string/help"
         android:visibility="visible" />
