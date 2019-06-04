@@ -2,13 +2,11 @@
     <string name="app_name">StudyWhere</string>
     <string name="title_activity_view_map_only">View Locations</string>
     <string name="title_activity_pick_maps">Map</string>
-    <string name="add_by_map">Add By Map</string>
-    <string name="add_by_text">Add By Text</string>
     <string name="study_place_information">Study Place Information</string>
-    <string name="location">Location</string>
-    <string name="crowdedness">Crowdedness</string>
-    <string name="locationname">LocationName</string>
-    <string name="noise_level">Noise Level</string>
     <string name="view_study_groups">View Study Groups</string>
     <string name="help">Help</string>
+    <string name="latitudetext">Latitude:</string>
+    <string name="longitudetext">Longitude:</string>
+    <string name="add_study_place">Add Study Place</string>
+    <string name="type_name_of_location_here">type name of location here</string>
 </resources>

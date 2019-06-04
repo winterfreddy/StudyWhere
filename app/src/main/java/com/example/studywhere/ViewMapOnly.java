@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +39,7 @@ import static com.example.studywhere.Constants.ERROR_DIALOG_REQUEST;
 import static com.example.studywhere.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.studywhere.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
-public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback {
+public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted = false;
@@ -235,5 +236,19 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback 
             return;
         }
         mMap.setMyLocationEnabled(true);
+        mMap.setOnMapLongClickListener(this);
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+//        mMap.addMarker(new MarkerOptions()
+//                .position(latLng)
+//                .title("onLongClick: You are here")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        Toast.makeText(getApplicationContext(), "onClickWorked", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent("studywhere.StudyPlaceInfo");
+        startActivity(intent);
+
     }
 }

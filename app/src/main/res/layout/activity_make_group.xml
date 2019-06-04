@@ -15,7 +15,7 @@
         android:id="@+id/linearLayout2">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/addstudyplacetitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout2"
