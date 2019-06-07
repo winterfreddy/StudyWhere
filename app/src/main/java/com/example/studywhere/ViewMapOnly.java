@@ -247,7 +247,16 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         Toast.makeText(getApplicationContext(), "onClickWorked", Toast.LENGTH_LONG).show();
 
+        Double longitude = latLng.longitude;
+        Double latitude = latLng.latitude;
+        String strlongitude = longitude.toString();
+        String strlatitude = latitude.toString();
+
         Intent intent = new Intent("studywhere.StudyPlaceInfo");
+        Bundle coordinates = new Bundle();
+        coordinates.putString("LONGITUDE", strlongitude);
+        coordinates.putString("LATITUDE", strlatitude);
+        intent.putExtras(coordinates);
         startActivity(intent);
 
     }
