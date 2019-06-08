@@ -27,7 +27,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,13 +58,12 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
 
         final Button mhelpbutton = findViewById(R.id.helpbutton);
         mhelpbutton.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View v) {
-                                               Intent intent = new Intent("studywhere.HelpScreen");
-                                               startActivity(intent);
-                                           }
-                                       }
-        );
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("studywhere.HelpScreen");
+                startActivity(intent);
+            }
+        });
 
         mDb = FirebaseFirestore.getInstance();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -136,7 +134,6 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-            //getChatrooms();
             getLastKnownLocation();
         } else {
             ActivityCompat.requestPermissions(this,
@@ -188,7 +185,6 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if (mLocationPermissionGranted) {
-                    //getChatrooms();
                     getLastKnownLocation();
                 } else {
                     getLocationPermission();
@@ -203,7 +199,6 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         super.onResume();
         if (checkMapServices()) {
             if (mLocationPermissionGranted) {
-                //getChatrooms();
                 getLastKnownLocation();
             } else {
                 getLocationPermission();
@@ -225,6 +220,7 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
+        //TODO: move camera to where you are
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -245,7 +241,6 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
 //                .position(latLng)
 //                .title("onLongClick: You are here")
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        Toast.makeText(getApplicationContext(), "onClickWorked", Toast.LENGTH_LONG).show();
 
         Double longitude = latLng.longitude;
         Double latitude = latLng.latitude;

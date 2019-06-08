@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent">
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -80,7 +93,7 @@
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:text="@string/type_name_of_location_here"
+        android:hint="Enter location name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +150,7 @@
         app:layout_constraintTop_toBottomOf="@+id/CrowdinessRate" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/NoisenessRate"
         android:layout_width="198dp"
         android:layout_height="46dp"
         android:layout_marginStart="112dp"
@@ -161,7 +174,7 @@
         android:layout_marginTop="44dp"
         android:text="CANCEL"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/NoisenessRate" />
 
     <Button
         android:id="@+id/savebutton"
@@ -176,6 +189,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/cancelbutton"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/NoisenessRate" />
 
 </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>
