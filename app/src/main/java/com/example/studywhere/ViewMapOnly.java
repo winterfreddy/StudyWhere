@@ -61,6 +61,15 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        final Button mviewgroups = findViewById(R.id.viewstudygroupsbutton);
+        mviewgroups.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("studywhere.ViewGroups");
+                startActivity(intent);
+            }
+        });
+
         final Button mhelpbutton = findViewById(R.id.helpbutton);
         mhelpbutton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".75"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="20sp"
+        android:text="First added study group"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/group_name"/>
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent=".25"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/group_name"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="17sp"
+        android:text="June 12, 2019"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/timestamp"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

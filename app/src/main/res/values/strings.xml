@@ -9,4 +9,5 @@
     <string name="longitudetext">Longitude:</string>
     <string name="add_study_place">Add Study Place</string>
     <string name="type_name_of_location_here">type name of location here</string>
+    <string name="title_activity_view_groups">ViewGroups</string>
 </resources>
