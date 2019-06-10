@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ViewGroups">
 
-    <android.support.design.widget.AppBarLayout
+    <!--<android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -15,12 +15,15 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_below="@+id/null"
+            android:layout_alignStart="@+id/null"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_view_groups" />
+    <include layout="@layout/content_view_groups" />-->
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
