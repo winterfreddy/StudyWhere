@@ -24,7 +24,13 @@
         <activity
             android:name=".ViewGroups"
             android:label="@string/title_activity_view_groups"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="studywhere.ViewGroups"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".HelpScreen">
             <intent-filter>
                 <action android:name="studywhere.HelpScreen" />
