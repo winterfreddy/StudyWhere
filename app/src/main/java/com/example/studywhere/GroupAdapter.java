@@ -62,7 +62,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         TextView group_name, school_name, subject_name, location, date, group_size, timestamp;
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View v) {
             //nothing here!!!
         }
 

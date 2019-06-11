@@ -53,8 +53,8 @@ public class newGroupDialog extends DialogFragment implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
+    public void onClick(View v) {
+        switch (v.getId()){
             case R.id.submit:{
                 String group_name = mGroupName.getText().toString();
                 String school_name = mSchoolName.getText().toString();

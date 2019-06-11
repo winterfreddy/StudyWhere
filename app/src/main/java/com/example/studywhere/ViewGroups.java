@@ -59,6 +59,7 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onRefresh(){
+        mSwipeRefreshLayout.setRefreshing(false);
         loadGroups();
     }
 
@@ -85,7 +86,7 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
                     }
 
                     if(task.getResult().size() != 0){
-                        mLastQueriedDoc = task.getResult().getDocuments().get(task.getResult().size() -1);
+                        mLastQueriedDoc = task.getResult().getDocuments().get(task.getResult().size()-1);
                     }
 
                     mGroupAdapter.notifyDataSetChanged();
@@ -133,8 +134,8 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
+    public void onClick(View v) {
+        switch (v.getId()){
             case R.id.add:{
                 newGroupDialog d = new newGroupDialog();
                 d.show(getSupportFragmentManager(), "New Group Dialog");
