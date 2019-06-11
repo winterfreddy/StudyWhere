@@ -21,8 +21,11 @@ public class newGroupDialog extends DialogFragment implements View.OnClickListen
     private GroupActivity mGroupActivity;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        int style = DialogFragment.STYLE_NORMAL;
+        int theme = android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
+        setStyle(style, theme);
     }
 
     @Nullable
@@ -39,6 +42,7 @@ public class newGroupDialog extends DialogFragment implements View.OnClickListen
         mCancel = view.findViewById(R.id.cancel);
         mSubmit.setOnClickListener(this);
         mCancel.setOnClickListener(this);
+        getDialog().setTitle("Add your study group.");
         return view;
     }
 
@@ -59,7 +63,7 @@ public class newGroupDialog extends DialogFragment implements View.OnClickListen
                 String date = mDate.getText().toString();
                 String group_size = mGroupSize.getText().toString();
                 if ((!group_name.equals("")) && (!school_name.equals("")) && (!subject.equals("")) && (!location.equals("")) && (!date.equals(""))){
-                    mGroupActivity.createNewGroup(group_name, school_name, subject, location, date, group_size);
+                    mGroupActivity.addNewGroup(group_name, school_name, subject, location, date, group_size);
                     getDialog().dismiss();
                 }
                 else{

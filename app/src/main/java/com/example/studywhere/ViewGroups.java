@@ -3,15 +3,13 @@ package com.example.studywhere;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
-
+import android.support.annotation.Nullable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -25,40 +23,46 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class ViewGroups extends AppCompatActivity implements View.OnClickListener, GroupActivity{
+public class ViewGroups extends AppCompatActivity implements View.OnClickListener, GroupActivity, SwipeRefreshLayout.OnRefreshListener{
 
     private static final String TAG = "ViewGroups";
-    private FloatingActionButton mFab;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private View mParentLayout;
     private ArrayList<Group> mGroups = new ArrayList<>();
     private GroupAdapter mGroupAdapter;
     private DocumentSnapshot mLastQueriedDoc;
+    private FloatingActionButton fab;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_groups);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mParentLayout = findViewById(android.R.id.content);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        fab = findViewById(R.id.add);
+        /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Enter the info", Snackbar.LENGTH_LONG)
-                        .setAction("Something happened", null).show();
+
             }
-        });
+        });*/
+        fab.setOnClickListener(this);
+        initializeRecyclerView();
+        loadGroups();
+
     }
 
     @Override
-    public void onGroupSelected(Group group){
-        //this is for editing
+    public void onRefresh(){
+        loadGroups();
     }
 
-    private void getGroups(){
+    private void loadGroups(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         CollectionReference groupsCollectionRef = db.collection("study groups");
@@ -87,13 +91,13 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
                     mGroupAdapter.notifyDataSetChanged();
                 }
                 else{
-                    showSnackBarMessage("Query failed");
+                    Toast.makeText(ViewGroups.this, "Failed to load groups", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void initRecyclerView(){
+    private void initializeRecyclerView(){
         if(mGroupAdapter == null){
             mGroupAdapter = new GroupAdapter(this, mGroups);
         }
@@ -102,7 +106,7 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
-    public void createNewGroup(String group_name, String school_name, String subject, String location, String date, String group_size) {
+    public void addNewGroup(String group_name, String school_name, String subject, String location, String date, String group_size) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference newGroupRef = db.collection("study groups").document();
         Group studyGroup = new Group();
@@ -128,16 +132,12 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
 
     }
 
-    private void showSnackBarMessage(String message){
-        Snackbar.make(mParentLayout, message, Snackbar.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.fab:{
-                newGroupDialog dialog = new newGroupDialog();
-                dialog.show(getSupportFragmentManager(), "New Group Dialog");
+            case R.id.add:{
+                newGroupDialog d = new newGroupDialog();
+                d.show(getSupportFragmentManager(), "New Group Dialog");
                 break;
             }
         }
