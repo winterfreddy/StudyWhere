@@ -127,7 +127,7 @@
         android:layout_height="20dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="8dp"
-        android:text="When to meet: "
+        android:text="Size of group: "
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_des"
