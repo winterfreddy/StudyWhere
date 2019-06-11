@@ -7,16 +7,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,12 +33,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import static com.example.studywhere.Constants.ERROR_DIALOG_REQUEST;
 import static com.example.studywhere.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
@@ -45,19 +58,22 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
     private FusedLocationProviderClient mFusedLocationClient;
     private FirebaseFirestore mDb;
     private Location mLocation;
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable;
 
     private static final String TAG = "ViewMapOnly";
+    private static final int DEFAULT_ZOOM = 17;
+    private static final int UPDATE_LOCATION_TIME = 5000; //5 seconds
+
 
     //default location if anything else fails
-    //TODO change mDefault location to UCSB (Currently Sydney)
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
-    private static final int DEFAULT_ZOOM = 17;
+    private final LatLng mDefaultLocation = new LatLng(34.41223825619469, -119.84494138509037);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_map_only);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -217,6 +233,7 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onResume() {
         super.onResume();
+        updateStudyLocations();
         if (checkMapServices()) {
             if (mLocationPermissionGranted) {
                 getLastKnownLocation();
@@ -227,15 +244,31 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+    private void updateStudyLocations(){
+        Log.d(TAG, "updateStudyLocations running.");
+        mHandler.postDelayed(mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getStudyLocations();
+                mHandler.postDelayed(mRunnable, UPDATE_LOCATION_TIME);
+            }
+        }, UPDATE_LOCATION_TIME);
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        stopUpdatingStudyLocations();
+    }
+
+    private void stopUpdatingStudyLocations(){
+        mHandler.removeCallbacks(mRunnable);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        CollectionReference mCReference = mDb.collection("study locations");
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        //TODO: move camera to where you are
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
@@ -247,14 +280,75 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMapLongClickListener(this);
 
         getCurrentDeviceLocation();
+
+        mCReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot documentSnapshot : task.getResult()){
+                        Log.d(TAG, documentSnapshot.getId() + " => " + documentSnapshot.getData());
+
+                        GeoPoint geoPoint = documentSnapshot.getGeoPoint("geo_point");
+                        Double lat_double = geoPoint.getLatitude();
+                        Double long_double = geoPoint.getLongitude();
+                        String lat_str = lat_double.toString();
+                        String long_str = long_double.toString();
+                        Log.d(TAG, "lat_str is " + lat_str);
+                        Log.d(TAG, "long_str is " + long_str);
+                        LatLng studyLocation = new LatLng(lat_double, long_double);
+
+                        String noiselevel = documentSnapshot.get("noiseness").toString();
+                        String crowdlevel = documentSnapshot.get("crowdedness").toString();
+                        Log.d(TAG, "noise level is " + noiselevel);
+                        Log.d(TAG, "crowd level is " + crowdlevel);
+
+                        mMap.addMarker(new MarkerOptions()
+                                .position(studyLocation)
+                                .title(documentSnapshot.getId())
+                                .snippet("Noise Level: " + noiselevel + "\n" + "Crowd Level: " + crowdlevel)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        );
+                        //Allows the snippet to become multi-lined
+                        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                            @Override
+                            public View getInfoWindow(Marker marker) {
+                                return null;
+                            }
+
+                            @Override
+                            public View getInfoContents(Marker marker) {
+                                Context mContext = getApplicationContext();
+                                LinearLayout information = new LinearLayout(mContext);
+                                information.setOrientation(LinearLayout.VERTICAL);
+
+                                TextView infoTitle = new TextView(mContext);
+                                infoTitle.setTextColor(Color.BLACK);
+                                infoTitle.setGravity(Gravity.CENTER);
+                                infoTitle.setTypeface(null, Typeface.BOLD);
+                                infoTitle.setText(marker.getTitle());
+
+                                TextView infoSnippet = new TextView(mContext);
+                                infoSnippet.setTextColor(Color.GRAY);
+                                infoSnippet.setText(marker.getSnippet());
+
+                                information.addView(infoTitle);
+                                information.addView(infoSnippet);
+
+                                return information;
+                            }
+                        });
+                    }
+                }
+                else {
+                    Log.d(TAG, "Error getting documents from document snapshot in onMapReady: ", task.getException());
+                }
+            }
+        });
+
     }
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-//        mMap.addMarker(new MarkerOptions()
-//                .position(latLng)
-//                .title("onLongClick: You are here")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         Double longitude = latLng.longitude;
         Double latitude = latLng.latitude;
@@ -268,5 +362,79 @@ public class ViewMapOnly extends FragmentActivity implements OnMapReadyCallback,
         intent.putExtras(coordinates);
         startActivity(intent);
 
+    }
+
+    private void getStudyLocations(){
+        Log.d(TAG, "getStudyLocations: getting latest study locations from firebase");
+
+        try{
+            CollectionReference mCReference = mDb.collection("study locations");
+            mCReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        for(DocumentSnapshot documentSnapshot : task.getResult()){
+                            Log.d(TAG, documentSnapshot.getId() + " => " + documentSnapshot.getData());
+
+                            GeoPoint geoPoint = documentSnapshot.getGeoPoint("geo_point");
+                            Double lat_double = geoPoint.getLatitude();
+                            Double long_double = geoPoint.getLongitude();
+                            String lat_str = lat_double.toString();
+                            String long_str = long_double.toString();
+                            Log.d(TAG, "lat_str is " + lat_str);
+                            Log.d(TAG, "long_str is " + long_str);
+                            LatLng studyLocation = new LatLng(lat_double, long_double);
+
+                            String noiselevel = documentSnapshot.get("noiseness").toString();
+                            String crowdlevel = documentSnapshot.get("crowdedness").toString();
+                            Log.d(TAG, "noise level is " + noiselevel);
+                            Log.d(TAG, "crowd level is " + crowdlevel);
+
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(studyLocation)
+                                    .title(documentSnapshot.getId())
+                                    .snippet("Noise Level: " + noiselevel + "\n" + "Crowd Level: " + crowdlevel)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            );
+                            //Allows the snippet to become multi-lined
+                            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                                @Override
+                                public View getInfoWindow(Marker marker) {
+                                    return null;
+                                }
+
+                                @Override
+                                public View getInfoContents(Marker marker) {
+                                    Context mContext = getApplicationContext();
+                                    LinearLayout information = new LinearLayout(mContext);
+                                    information.setOrientation(LinearLayout.VERTICAL);
+
+                                    TextView infoTitle = new TextView(mContext);
+                                    infoTitle.setTextColor(Color.BLACK);
+                                    infoTitle.setGravity(Gravity.CENTER);
+                                    infoTitle.setTypeface(null, Typeface.BOLD);
+                                    infoTitle.setText(marker.getTitle());
+
+                                    TextView infoSnippet = new TextView(mContext);
+                                    infoSnippet.setTextColor(Color.GRAY);
+                                    infoSnippet.setText(marker.getSnippet());
+
+                                    information.addView(infoTitle);
+                                    information.addView(infoSnippet);
+
+                                    return information;
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        Log.d(TAG, "Error getting documents from document snapshot in getStudyLocations: ", task.getException());
+                    }
+                }
+            });
+        }
+        catch (IllegalStateException e){
+            Log.e(TAG, "getStudyLocations Error: " + e.getMessage() );
+        }
     }
 }
