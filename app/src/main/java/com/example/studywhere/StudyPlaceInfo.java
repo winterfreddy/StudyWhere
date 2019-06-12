@@ -75,7 +75,7 @@ public class StudyPlaceInfo extends AppCompatActivity {
 
         db.collection("study locations").document(mNameLocation).set(location);
 
-
+        Toast.makeText(this, "StudyWhere study location: " + mNameLocation + " saved", Toast.LENGTH_SHORT).show();
     }
 
 }
