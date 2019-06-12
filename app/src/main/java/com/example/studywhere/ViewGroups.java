@@ -27,7 +27,7 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
 
     private static final String TAG = "ViewGroups";
     private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeLayout;
     private View mParentLayout;
     private ArrayList<Group> mGroups = new ArrayList<>();
     private GroupAdapter mGroupAdapter;
@@ -42,8 +42,17 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
         //setSupportActionBar(toolbar);
         mParentLayout = findViewById(android.R.id.content);
         mRecyclerView = findViewById(R.id.recycler_view);
-        mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeLayout = findViewById(R.id.swipe_layout);
+        mSwipeLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh(){
+                        //mSwipeLayout.setRefreshing(false);
+                        loadGroups();
+                        mSwipeLayout.setRefreshing(false);
+                    }
+                }
+        );
         fab = findViewById(R.id.add);
         /*fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,15 +68,14 @@ public class ViewGroups extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onRefresh(){
-        mSwipeRefreshLayout.setRefreshing(false);
+        //mSwipeLayout.setRefreshing(false);
         loadGroups();
+        mSwipeLayout.setRefreshing(false);
     }
 
     private void loadGroups(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         CollectionReference groupsCollectionRef = db.collection("study groups");
-
         Query groupsQuery = null;
         if (mLastQueriedDoc != null){
             groupsQuery = groupsCollectionRef.orderBy("timestamp", Query.Direction.DESCENDING).startAfter(mLastQueriedDoc);

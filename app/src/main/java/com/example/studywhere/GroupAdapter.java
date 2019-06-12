@@ -63,7 +63,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         @Override
         public void onClick(View v) {
-            //nothing here!!!
+            //nothing here
         }
 
         public ViewHolder(View itemView) {
